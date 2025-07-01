@@ -26,9 +26,8 @@ module BaseStation
 {
     parameters:
         int numUsers = default(10);
-        int numResourceBlocks = default(25);  // 5 MHz bandwidth
+        int numResourceBlocks = default(25);
         double ttiDuration @unit(s) = default(1ms);
-        string schedulingAlgorithm = default("RoundRobin");
         
         @display("i=device/antennatower;bgb=500,400");
         
@@ -54,7 +53,6 @@ module BaseStation
                 numUsers = parent.numUsers;
                 numResourceBlocks = parent.numResourceBlocks;
                 ttiDuration = parent.ttiDuration;
-                schedulingAlgorithm = parent.schedulingAlgorithm;
                 @display("p=300,200");
         }
         
@@ -65,9 +63,9 @@ module BaseStation
         }
         
         // Connect router to queues and scheduler
+        router.toScheduler --> scheduler.cqiFromUsers;
         for i=0..numUsers-1 {
             router.toQueue[i] --> queue[i].in;
-            router.toScheduler[i] --> scheduler.fromUsers[i];
         }
         
         // Connect scheduler to users

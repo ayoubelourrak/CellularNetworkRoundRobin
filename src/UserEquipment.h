@@ -21,9 +21,6 @@
 
 using namespace omnetpp;
 
-/**
- * TODO - Generated class
- */
 class UserEquipment : public cSimpleModule
 {
     private:
@@ -32,16 +29,15 @@ class UserEquipment : public cSimpleModule
 
         // Traffic generation parameters
         double arrivalRate;
-        int packetSize;
+        int maxPacketSize;
         std::string arrivalPattern;
         cMessage *nextArrivalEvent;
-        int sequenceNumber;
+        unsigned long sequenceNumber;
 
         // Channel quality parameters
         int currentCQI;
+        int maxCQI;
         std::string cqiModel;
-        std::string channelGroup;
-        double cqiUpdateInterval;
 
         // Binomial CQI parameters
         int binomialN;
@@ -53,8 +49,10 @@ class UserEquipment : public cSimpleModule
         int cqiRngId;
 
         // Statistics
-        long packetsGenerated;
         simtime_t lastArrivalTime;
+        simsignal_t packetsGeneratedSignal;
+        simsignal_t cqiValueSignal;
+        simsignal_t interArrivalTimeSignal;
 
     protected:
         virtual void initialize() override;
@@ -71,7 +69,6 @@ class UserEquipment : public cSimpleModule
         void updateCQI();
         void reportCQI();
         int generateCQI();
-        int generateBinomialCQI();
 
         // Message handling
         void handleArrivalEvent();

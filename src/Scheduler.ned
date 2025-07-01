@@ -22,28 +22,21 @@ simple Scheduler
 {
     parameters:
         int numUsers = default(10);
-        int numResourceBlocks = default(25);  // 5 MHz bandwidth
+        int numResourceBlocks = default(25);
         double ttiDuration @unit(s) = default(1ms);
-        string schedulingAlgorithm = default("RoundRobin");
         
         // Statistics
-        @signal[throughput](type=double);
-        @signal[fairnessIndex](type=double);
-        @signal[userResponseTime*](type=simtime_t);
-        @signal[userThroughput*](type=double);
-        @signal[rbUtilization](type=double);
-        @signal[packetsInSystem](type=long);
+        @signal[rbUtilization](type=int);
+        @signal[scheduledUsers](type=int);
+        @signal[transmittedBytes](type=long);
         
-        @statistic[systemThroughput](source=throughput; record=vector,mean,sum,timeavg);
-        @statistic[fairness](source=fairnessIndex; record=vector,mean,timeavg);
-        @statistic[responseTime](source="userResponseTime*"; record=vector,mean,histogram);
-        @statistic[perUserThroughput](source="userThroughput*"; record=vector,mean,timeavg);
-        @statistic[resourceUtilization](source=rbUtilization; record=vector,mean,timeavg);
-        @statistic[packetsInSystem](source=packetsInSystem; record=vector,timeavg,mean);
+        @statistic[systemTrasmittedBytes](source=transmittedBytes; record=vector,stats,timeavg,sum);
+        @statistic[resourceUtilization](source=rbUtilization; record=vector,stats,timeavg,histogram);
+        @statistic[scheduledUsersPerRound](source=scheduledUsers; record=vector,stats,histogram);
         
         @display("i=block/control");
         
     gates:
-        input fromUsers[numUsers];
+        input cqiFromUsers;
         output toUsers[numUsers];
 }

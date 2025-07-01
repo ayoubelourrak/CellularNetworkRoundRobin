@@ -18,9 +18,6 @@ package cellularroundrobin;
 import cellularroundrobin.BaseStation;
 import cellularroundrobin.UserEquipment;
 
-//
-// TODO auto-generated type
-//
 network CellularNetwork
 {
     parameters:

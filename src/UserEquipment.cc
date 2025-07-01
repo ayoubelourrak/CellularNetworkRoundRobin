@@ -22,11 +22,10 @@ void UserEquipment::initialize()
     // Get parameters
         userId = par("userId");
         arrivalRate = par("arrivalRate");
-        packetSize = par("packetSize");
+        maxPacketSize = par("packetSize");
         arrivalPattern = par("arrivalPattern").stringValue();
         cqiModel = par("cqiModel").stringValue();
-        channelGroup = par("channelGroup").stringValue();
-        cqiUpdateInterval = par("cqiUpdateInterval");
+        maxCQI = par("maxCQI");
 
         // Get RNG stream IDs
         arrivalRngId = par("arrivalRngId");
@@ -41,22 +40,17 @@ void UserEquipment::initialize()
 
         // Initialize statistics
         sequenceNumber = 0;
-        packetsGenerated = 0;
         lastArrivalTime = 0;
+        packetsGeneratedSignal = registerSignal("packetGenerated");
+        cqiValueSignal = registerSignal("cqiValue");
+        interArrivalTimeSignal = registerSignal("interArrivalTime");
 
         // Generate initial CQI
-        currentCQI = generateCQI();
-        emit(registerSignal("cqiValue"), (long)currentCQI);
-
-        // Send initial CQI report
-        reportCQI();
+        currentCQI = 0;
 
         // Schedule first packet arrival
         nextArrivalEvent = new cMessage("nextArrival");
         scheduleNextArrival();
-
-        // Note: CQI updates are now triggered by base station requests
-        // No longer scheduling periodic updates
 
         EV << "User " << userId << " initialized with arrival rate " << arrivalRate
            << " Hz, CQI model: " << cqiModel << "\n";
@@ -73,11 +67,11 @@ void UserEquipment::handleMessage(cMessage *msg)
         reportCQI();
         delete msg;
     }
-    else if (SchedulingGrant *grant = dynamic_cast<SchedulingGrant*>(msg)) {
+    else if (SchedulingGrant *grant = check_and_cast<SchedulingGrant*>(msg)) {
         handleSchedulingGrant(grant);
     }
     else {
-        EV_WARN << "Unknown message type received\n";
+        EV_ERROR << "Unknown message type received\n";
         delete msg;
     }
 }
@@ -103,13 +97,11 @@ void UserEquipment::generatePacket()
     // Record inter-arrival time
     if (lastArrivalTime > 0) {
         simtime_t interArrival = simTime() - lastArrivalTime;
-        // fai controllo warm up
-        emit(registerSignal("interArrivalTime"), interArrival);
+        emit(interArrivalTimeSignal, interArrival);
     }
     lastArrivalTime = simTime();
 
-    packetsGenerated++;
-    emit(registerSignal("packetGenerated"), 1L);
+    emit(packetsGeneratedSignal, 1L);
 
     // Send directly to base station (no local queue)
     send(packet, "out");
@@ -126,7 +118,6 @@ void UserEquipment::scheduleNextArrival()
 
 double UserEquipment::getNextArrivalInterval()
 {
-    // Use dedicated RNG stream for arrivals
     if (arrivalPattern == "exponential") {
         return exponential(1.0 / arrivalRate, arrivalRngId);
     }
@@ -138,8 +129,7 @@ double UserEquipment::getNextArrivalInterval()
 
 int UserEquipment::getPacketSize()
 {
-    // cambia settando il max packet size e il suo rng
-    return par("packetSize").intValue();
+    return intuniform(1, maxPacketSize, sizeRngId);
 }
 
 void UserEquipment::updateCQI()
@@ -147,56 +137,22 @@ void UserEquipment::updateCQI()
     int oldCQI = currentCQI;
     currentCQI = generateCQI();
 
-    if (currentCQI != oldCQI) {
-        emit(registerSignal("cqiValue"), (long)currentCQI);
-        EV_DEBUG << "User " << userId << " CQI changed from " << oldCQI
-                 << " to " << currentCQI << "\n";
-    }
+    emit(cqiValueSignal, (long)currentCQI);
+    EV_DEBUG << "User " << userId << " CQI changed from " << oldCQI
+             << " to " << currentCQI << "\n";
 }
 
 int UserEquipment::generateCQI()
 {
     // Use dedicated RNG stream for CQI
     if (cqiModel == "binomial") {
-        return generateBinomialCQI();
+        return binomial(binomialN-1, binomialP, cqiRngId) + 1;
     }
     else if (cqiModel == "uniform") {
-        return intuniform(1, 15, cqiRngId);
+        return intuniform(1, maxCQI, cqiRngId);
     }
-    else if (cqiModel == "fixed") {
-        // For validation tests - use the cqi parameter directly
+    else {
         return par("cqi").intValue();
-    }
-    else {
-        // Channel group based CQI
-        if (channelGroup == "good") {
-            return intuniform(10, 15, cqiRngId);
-        }
-        else if (channelGroup == "poor") {
-            return intuniform(1, 5, cqiRngId);
-        }
-        else {  // medium
-            return intuniform(5, 10, cqiRngId);
-        }
-    }
-}
-
-int UserEquipment::generateBinomialCQI()
-{
-    // Generate binomial random variable using dedicated RNG
-    int successes = 0;
-    for (int i = 0; i < binomialN; i++) {
-        if (uniform(0, 1, cqiRngId) < binomialP) {
-            successes++;
-        }
-    }
-
-    // Map to CQI range [1, 15]
-    if (successes == 0) {
-        return 1;
-    }
-    else {
-        return std::min(15, successes);
     }
 }
 
@@ -224,6 +180,5 @@ void UserEquipment::finish()
     cancelAndDelete(nextArrivalEvent);
 
     // Print final statistics
-    EV << "User " << userId << " finished:\n"
-       << "  Packets generated: " << packetsGenerated << "\n";
+    EV << "User " << userId << " finished\n";
 }

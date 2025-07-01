@@ -18,7 +18,6 @@
 
 #include <omnetpp.h>
 #include <vector>
-#include <deque>
 #include "Messages_m.h"
 #include "FIFOQueue.h"
 
@@ -34,17 +33,14 @@ class Scheduler : public cSimpleModule
         int numUsers;
         int numResourceBlocks;
         simtime_t ttiDuration;
-        std::string schedulingAlgorithm;
 
         // Round-robin state
         int currentUserIndex;
-        int ttiCounter;
+        long ttiCounter;
 
         // User information
         std::vector<int> userCQI;
         std::vector<FIFOQueue*> userQueues;  // Pointers to queue modules
-        std::vector<double> userBytesTransmitted;
-        std::vector<int> userPacketsTransmitted;
 
         // CQI collection state
         std::vector<bool> cqiReceived;
@@ -54,36 +50,16 @@ class Scheduler : public cSimpleModule
         cMessage *ttiEvent;
 
         // Statistics
-        cOutVector throughputVector;
-        cOutVector fairnessVector;
-        cOutVector rbUtilizationVector;
-        cOutVector packetsInSystemVector;
-        std::vector<cOutVector*> userResponseTimeVectors;
-        std::vector<cOutVector*> userThroughputVectors;
+        simsignal_t scheduledUsersSignal;
+        simsignal_t rbUtilizationSignal;
+        simsignal_t transmittedBytesSignal;
+
 
         // Metrics tracking
         simtime_t lastMetricCalculation;
-        double totalBytesTransmitted;
-        int totalRBsUsed;
-        int totalPacketsInSystem;  // Added missing declaration
 
-        // CQI to bytes mapping (3GPP table from project spec)
+        // CQI to bytes mapping
         static const int cqiToBytesPerRB[16];
-
-        // Steady state detection
-        simtime_t steadyStateCheckInterval;
-        simtime_t lastSteadyStateCheck;
-        std::deque<double> throughputHistory;
-        int historySize;
-        bool steadyStateReached;
-        double varianceThreshold;
-
-        // Warmup period handling
-        simtime_t warmupPeriod;
-        bool isWarmupPeriod() const { return simTime() < warmupPeriod; }
-
-        // RB utilization tracking for mean calculation
-        std::vector<double> rbUtilizationHistory;
 
     protected:
         virtual void initialize() override;
@@ -92,6 +68,7 @@ class Scheduler : public cSimpleModule
 
         // Scheduling functions
         void performRoundRobinScheduling();
+        void startScheduling();
         int getBytesPerRB(int cqi);
 
         // CQI management
@@ -102,19 +79,8 @@ class Scheduler : public cSimpleModule
         void handleCQIReport(CQIReport *report);
         void handleTTIEvent();
 
-        // Metrics calculation
-        void calculateMetrics();
-        double calculateJainsFairnessIndex(const std::vector<double>& throughputs);
-        void checkSteadyState();
-        double calculateVariance(const std::deque<double>& values);
-
-        // Queue management
-        int getTotalQueueLength();
-        void updateQueueStatistics();
-
         // Utility functions
         void sendSchedulingGrant(int userId, int allocatedBytes, int allocatedRBs);
-        double calculateMean(const std::vector<double>& values);  // Helper function for mean calculation
 };
 
 #endif

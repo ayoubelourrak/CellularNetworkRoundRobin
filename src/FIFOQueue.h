@@ -18,6 +18,7 @@
 
 #include <omnetpp.h>
 #include "Messages_m.h"
+#include "QueueResult.h"
 
 using namespace omnetpp;
 
@@ -29,12 +30,12 @@ class FIFOQueue : public cSimpleModule
     private:
         int userId;
         cQueue queue;
-        bool collectStatistics;
 
         // Statistics
         simsignal_t queueLengthSignal;
-        simsignal_t queueingTimeSignal;
-        simsignal_t packetDroppedSignal;
+        simsignal_t userResponseTimeSignal;
+        simsignal_t userBytesTrasmittedSignal;
+
 
     protected:
         virtual void initialize() override;
@@ -49,7 +50,7 @@ class FIFOQueue : public cSimpleModule
         DataPacket* dequeue();
         void enqueue(DataPacket* packet);
         int getTotalBytes() const;
-        std::vector<DataPacket*> getPacketsToTransmit(int bytesPerRB, int rbsAvailable);
+        QueueResult* getPacketsToTransmit(int bytesPerRB, int rbsAvailable);
 };
 
 #endif

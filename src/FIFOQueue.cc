@@ -20,25 +20,20 @@ Define_Module(FIFOQueue);
 void FIFOQueue::initialize()
 {
     userId = par("userId");
-    collectStatistics = par("collectStatistics");
 
     queue.setName("queue");
 
-    // Initialize signals
     queueLengthSignal = registerSignal("queueLength");
-    queueingTimeSignal = registerSignal("queueingTime");
-    packetDroppedSignal = registerSignal("packetDropped");
-
-    // Record initial queue length
-    emit(queueLengthSignal, 0L);
+    userResponseTimeSignal = registerSignal("userResponseTime");
+    userBytesTrasmittedSignal = registerSignal("userBytesTrasmitted");
 }
 
 void FIFOQueue::handleMessage(cMessage *msg)
 {
-    if (DataPacket *packet = dynamic_cast<DataPacket*>(msg)) {
+    if (DataPacket *packet = check_and_cast<DataPacket*>(msg)) {
         enqueue(packet);
     } else {
-        // metti messaggio di errore
+        EV_ERROR << "Unknown message type received\n";
         delete msg;
     }
 }
@@ -49,10 +44,11 @@ void FIFOQueue::enqueue(DataPacket* packet)
     queue.insert(packet);
 
     // Emit statistics
-    emit(queueLengthSignal, (long)queue.getLength());
+    int queueLength = getLength();
+    emit(queueLengthSignal, queueLength);
 
     EV_DEBUG << "Queue " << userId << ": Packet enqueued. Queue length: "
-             << queue.getLength() << "\n";
+             << queueLength << "\n";
 }
 
 DataPacket* FIFOQueue::dequeue()
@@ -62,13 +58,6 @@ DataPacket* FIFOQueue::dequeue()
     }
 
     DataPacket* packet = check_and_cast<DataPacket*>(queue.pop());
-
-    // Calculate queueing time
-    simtime_t queueingTime = simTime() - packet->getCreationTime();
-    emit(queueingTimeSignal, queueingTime);
-
-    // Update queue length
-    emit(queueLengthSignal, (long)queue.getLength());
 
     return packet;
 }
@@ -82,42 +71,37 @@ DataPacket* FIFOQueue::peekFront() const
     return check_and_cast<DataPacket*>(queue.front());
 }
 
-int FIFOQueue::getTotalBytes() const
+QueueResult* FIFOQueue::getPacketsToTransmit(int bytesPerRB, int rbsAvailable)
 {
-    int totalBytes = 0;
-    for (cQueue::Iterator it(queue); !it.end(); ++it) {
-        DataPacket *packet = check_and_cast<DataPacket*>(*it);
-        totalBytes += packet->getByteLength();
-    }
-    return totalBytes;
-}
+    int totalBytesAvailable = bytesPerRB * rbsAvailable;
+    int totalBytesTrasmitted = 0;
+    int rbUsed = 0;
 
-std::vector<DataPacket*> FIFOQueue::getPacketsToTransmit(int bytesPerRB, int rbsAvailable)
-{
-    std::vector<DataPacket*> packetsToTransmit;
-    int totalBytesNeeded = 0;
+    while (totalBytesAvailable > 0 && !isEmpty()){
+        DataPacket *front = check_and_cast<DataPacket*>(peekFront());
+        if (front->getByteLength() <= totalBytesAvailable){
+            DataPacket *packet = check_and_cast<DataPacket*>(dequeue());
 
-    // Check which packets can fit in available RBs
-    for (cQueue::Iterator it(queue); !it.end(); ++it) {
-        DataPacket *packet = check_and_cast<DataPacket*>(*it);
-        int packetBytes = packet->getByteLength();
-        int rbsNeeded = (totalBytesNeeded + packetBytes + bytesPerRB - 1) / bytesPerRB;
+            totalBytesAvailable -= packet->getByteLength();
+            totalBytesTrasmitted += packet->getByteLength();
 
-        if (rbsNeeded <= rbsAvailable) {
-            packetsToTransmit.push_back(packet);
-            totalBytesNeeded += packetBytes;
+            simtime_t responseTime = simTime() - packet->getCreationTime();
+            emit(userResponseTimeSignal, responseTime);
+
+            EV_DEBUG << "Transmitted packet "<< packet->getSequenceNumber() << ": "
+                    << packet->getByteLength() << " bytes, "
+                    << "response time: " << responseTime << "s\n";
         } else {
-            break;  // Can't fit more packets
+            break;
         }
     }
 
-    // Remove packets from queue
-    for (DataPacket* packet : packetsToTransmit) {
-        queue.remove(packet);
-    }
+    rbUsed = (totalBytesTrasmitted + bytesPerRB - 1) / bytesPerRB;
 
-    // Update queue length
-    emit(queueLengthSignal, (long)queue.getLength());
+    emit(queueLengthSignal, getLength());
+    emit(userBytesTrasmittedSignal, totalBytesTrasmitted);
+
+    QueueResult *packetsToTransmit = new QueueResult(rbUsed, totalBytesTrasmitted);
 
     return packetsToTransmit;
 }

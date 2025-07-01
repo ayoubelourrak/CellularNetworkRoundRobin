@@ -27,5 +27,5 @@ simple Router
     gates:
         input userIn[numUsers];
         output toQueue[numUsers];
-        output toScheduler[numUsers];// serve davvero che siano separati
+        output toScheduler;
 }

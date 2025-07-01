@@ -15,24 +15,20 @@
 
 package cellularroundrobin;
 
-//
-// TODO auto-generated module
-//
 simple UserEquipment
 {
     parameters:
         int userId = default(0);
         
         // Traffic generation parameters
-        volatile double arrivalRate @unit(Hz) = default(2Hz);  // packets/second
-        volatile int packetSize @unit(byte) = default(1000B);
+        volatile double arrivalRate @unit(Hz) = default(2000Hz);  // packets/second
+        volatile int maxPacketSize @unit(byte) = default(75B);
         string arrivalPattern = default("exponential");
         
         // Channel quality parameters
-        volatile int cqi = default(intuniform(1, 15));
+        volatile int cqi = default(15);
+        volatile int maxCQI = default(15);
         string cqiModel = default("uniform");
-        string channelGroup = default("medium");
-        double cqiUpdateInterval @unit(s) = default(100ms);
         
         // Binomial CQI parameters
         int binomialN = default(15);
@@ -49,8 +45,8 @@ simple UserEquipment
         @signal[interArrivalTime](type=simtime_t);
         
         @statistic[generatedPackets](source=packetGenerated; record=count);
-        @statistic[channelQuality](source=cqiValue; record=vector,histogram,mean);
-        @statistic[interArrivalTime](source=interArrivalTime; record=vector,mean,histogram);
+        @statistic[channelQuality](source=cqiValue; record=vector,histogram,stats);
+        @statistic[interArrivalTime](source=interArrivalTime; record=vector,stats,histogram);
         
         @display("i=device/cellphone");
         

@@ -22,16 +22,15 @@ simple FIFOQueue
 {
     parameters:
         int userId = default(0);
-        bool collectStatistics = default(true);
         
         // Statistics
-        @signal[queueLength](type=long);
-        @signal[queueingTime](type=simtime_t);
-        @signal[packetDropped](type=long); // non serve davvero
+        @signal[queueLength](type=int);
+        @signal[userResponseTime](type=simtime_t);
+        @signal[userBytesTrasmitted](type=double);
         
-        @statistic[queueLength](source=queueLength; record=vector,timeavg,max,mean);
-        @statistic[queueingTime](source=queueingTime; record=vector,mean,histogram);
-        @statistic[droppedPackets](source=packetDropped; record=count); // non serve davvero
+        @statistic[queueLength](source=queueLength; record=vector,timeavg,stats);
+        @statistic[responseTime](source="userResponseTime"; record=vector,stats,histogram);
+        @statistic[bytesTrasmitted](source="userBytesTrasmitted"; record=vector,timeavg,stats);
         
         @display("i=block/queue;q=queue");
         
