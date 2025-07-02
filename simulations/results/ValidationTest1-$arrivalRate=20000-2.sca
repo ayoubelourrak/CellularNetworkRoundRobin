@@ -1,0 +1,250 @@
+version 3
+run ValidationTest1-2-20250703-00:34:17-28688
+attr configname ValidationTest1
+attr datetime 20250703-00:34:17
+attr datetimef 20250703-003417
+attr experiment ValidationTest1
+attr inifile omnetpp.ini
+attr iterationvars $arrivalRate=20000
+attr iterationvarsd arrivalRate=20000
+attr iterationvarsf arrivalRate=20000-
+attr measurement $arrivalRate=20000
+attr network cellularroundrobin.CellularNetwork
+attr processid 28688
+attr repetition 2
+attr replication #2
+attr resultdir results
+attr runnumber 2
+attr seedset 2
+itervar arrivalRate 20000
+config description "Single user with fixed packet size and CQI 15"
+config sim-time-limit 20s
+config warmup-period 10s
+config *.numUsers 1
+config *.user[0].arrivalPattern "\"fixed\""
+config *.user[0].packetPattern "\"fixed\""
+config *.user[0].maxPacketSize 75B
+config *.user[0].cqiModel "\"fixed\""
+config *.user[0].cqi 15
+config *.user[0].arrivalRate 20000Hz
+config network cellularroundrobin.CellularNetwork
+config sim-time-limit 100s
+config warmup-period 10s
+config repeat 10
+config seed-set 2
+config num-rngs 40
+config **.statistic-recording true
+config **.scalar-recording true
+config **.vector-recording true
+config output-scalar-file results/ValidationTest1-$arrivalRate=20000-2.sca
+config output-vector-file results/ValidationTest1-$arrivalRate=20000-2.vec
+config *.numUsers 10
+config *.baseStation.numResourceBlocks 25
+config *.baseStation.ttiDuration 1ms
+config *.baseStation.schedulingAlgorithm "\"RoundRobin\""
+config *.user[*].arrivalRngId "3*index + 0"
+config *.user[*].sizeRngId "3*index + 1"
+config *.user[*].cqiRngId "3*index + 2"
+
+par CellularNetwork.baseStation.router typename "\"cellularroundrobin.Router\""
+par CellularNetwork.baseStation.router numUsers 1
+par CellularNetwork.baseStation.queue[0] typename "\"cellularroundrobin.FIFOQueue\""
+par CellularNetwork.baseStation.queue[0] userId 0
+statistic CellularNetwork.baseStation.queue[0] bytesTransmitted:stats
+field count 10001
+field mean 1500
+field stddev 0
+field min 1500
+field max 1500
+field sum 15001500
+field sqrsum 22502250000
+attr recordingmode stats
+attr source userBytesTransmitted
+scalar CellularNetwork.baseStation.queue[0] bytesTransmitted:sum 15001500
+attr recordingmode sum
+attr source userBytesTransmitted
+statistic CellularNetwork.baseStation.queue[0] responseTime:stats
+field count 200020
+field mean 0.00047500000000011
+field stddev 0.00028831478558228
+field min 0
+field max 0.00095
+field sum 95.009500000022
+field sqrsum 0.061756174999988
+attr recordingmode stats
+attr source userResponseTime
+scalar CellularNetwork.baseStation.queue[0] queueLength:timeavg 9.5000000000022
+attr recordingmode timeavg
+attr source queueLength
+statistic CellularNetwork.baseStation.queue[0] queueLength:stats
+field count 210002
+field mean 10
+field stddev 6.0553649304349
+field min 0
+field max 20
+field sum 2100020
+field sqrsum 28700400
+attr recordingmode stats
+attr source queueLength
+par CellularNetwork.baseStation.scheduler typename "\"cellularroundrobin.Scheduler\""
+par CellularNetwork.baseStation.scheduler numUsers 1
+par CellularNetwork.baseStation.scheduler numResourceBlocks 25
+par CellularNetwork.baseStation.scheduler ttiDuration 0.001s
+attr unit s
+statistic CellularNetwork.baseStation.scheduler scheduledUsersPerRound:stats
+field count 10001
+field mean 1
+field stddev 0
+field min 1
+field max 1
+field sum 10001
+field sqrsum 10001
+attr recordingmode stats
+attr source scheduledUsers
+statistic CellularNetwork.baseStation.scheduler resourceUtilization:stats
+field count 10001
+field mean 17
+field stddev 0
+field min 17
+field max 17
+field sum 170017
+field sqrsum 2890289
+attr recordingmode stats
+attr source rbUtilization
+statistic CellularNetwork.baseStation.scheduler systemTransmittedBytes:stats
+field count 10001
+field mean 1500
+field stddev 0
+field min 1500
+field max 1500
+field sum 15001500
+field sqrsum 22502250000
+attr recordingmode stats
+attr source transmittedBytes
+scalar CellularNetwork.baseStation.scheduler systemTransmittedBytes:sum 15001500
+attr recordingmode sum
+attr source transmittedBytes
+par CellularNetwork.baseStation typename "\"cellularroundrobin.BaseStation\""
+par CellularNetwork.baseStation numUsers 1
+par CellularNetwork.baseStation numResourceBlocks 25
+par CellularNetwork.baseStation ttiDuration 0.001s
+attr unit s
+par CellularNetwork.user[0] typename "\"cellularroundrobin.UserEquipment\""
+par CellularNetwork.user[0] userId 0
+par CellularNetwork.user[0] arrivalRate 20000Hz
+attr unit Hz
+par CellularNetwork.user[0] maxPacketSize 75byte
+attr unit byte
+par CellularNetwork.user[0] arrivalPattern "\"fixed\""
+par CellularNetwork.user[0] packetPattern "\"fixed\""
+par CellularNetwork.user[0] cqi 15
+par CellularNetwork.user[0] maxCQI 15
+par CellularNetwork.user[0] cqiModel "\"fixed\""
+par CellularNetwork.user[0] binomialN 15
+par CellularNetwork.user[0] binomialP 0.5
+par CellularNetwork.user[0] arrivalRngId 0
+par CellularNetwork.user[0] sizeRngId 1
+par CellularNetwork.user[0] cqiRngId 2
+statistic CellularNetwork.user[0] interArrivalTime:stats
+field count 200001
+field mean 4.9999999999917e-05
+field stddev 0
+field min 5e-05
+field max 5e-05
+field sum 10.000049999983
+field sqrsum 0.00050000249999903
+attr recordingmode stats
+attr source interArrivalTime
+statistic CellularNetwork.user[0] interArrivalTime:histogram
+field count 200001
+field mean 4.9999999999917e-05
+field stddev 0
+field min 5e-05
+field max 5e-05
+field sum 10.000049999983
+field sqrsum 0.00050000249999903
+attr recordingmode histogram
+attr source interArrivalTime
+bin	-inf	0
+bin	0	200001
+bin	0.01	0
+bin	0.02	0
+bin	0.03	0
+bin	0.04	0
+bin	0.05	0
+bin	0.06	0
+bin	0.07	0
+bin	0.08	0
+bin	0.09	0
+bin	0.1	0
+bin	0.11	0
+bin	0.12	0
+bin	0.13	0
+bin	0.14	0
+bin	0.15	0
+bin	0.16	0
+bin	0.17	0
+bin	0.18	0
+bin	0.19	0
+bin	0.2	0
+bin	0.21	0
+bin	0.22	0
+bin	0.23	0
+bin	0.24	0
+bin	0.25	0
+bin	0.26	0
+bin	0.27	0
+bin	0.28	0
+bin	0.29	0
+bin	0.3	0
+bin	0.31	0
+bin	0.32	0
+bin	0.33	0
+bin	0.34	0
+bin	0.35	0
+bin	0.36	0
+bin	0.37	0
+bin	0.38	0
+bin	0.39	0
+bin	0.4	0
+bin	0.41	0
+bin	0.42	0
+bin	0.43	0
+bin	0.44	0
+bin	0.45	0
+bin	0.46	0
+bin	0.47	0
+bin	0.48	0
+bin	0.49	0
+bin	0.5	0
+bin	0.51	0
+statistic CellularNetwork.user[0] channelQuality:histogram
+field count 10001
+field mean 15
+field stddev 0
+field min 15
+field max 15
+field sum 150015
+field sqrsum 2250225
+attr recordingmode histogram
+attr source cqiValue
+bin	-inf	0
+bin	14	0
+bin	15	10001
+bin	16	0
+statistic CellularNetwork.user[0] channelQuality:stats
+field count 10001
+field mean 15
+field stddev 0
+field min 15
+field max 15
+field sum 150015
+field sqrsum 2250225
+attr recordingmode stats
+attr source cqiValue
+scalar CellularNetwork.user[0] generatedPackets:count 200001
+attr recordingmode count
+attr source packetGenerated
+par CellularNetwork typename "\"cellularroundrobin.CellularNetwork\""
+par CellularNetwork numUsers 1
+

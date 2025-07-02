@@ -46,8 +46,8 @@ simple UserEquipment
         @signal[interArrivalTime](type=simtime_t);
         
         @statistic[generatedPackets](source=packetGenerated; record=count);
-        @statistic[channelQuality](source=cqiValue; record=vector,histogram,stats);
-        @statistic[interArrivalTime](source=interArrivalTime; record=vector,stats,histogram);
+        @statistic[channelQuality](source=cqiValue; record=histogram,stats);
+        @statistic[interArrivalTime](source=interArrivalTime; record=stats,histogram);
         
         @display("i=device/cellphone");
         

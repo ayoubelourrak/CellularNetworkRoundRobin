@@ -1,0 +1,84 @@
+file 18656182 1751495659                                        
+version 3
+run ValidationTest1-25-20250703-00:34:19-28848
+attr configname ValidationTest1
+attr datetime 20250703-00:34:19
+attr datetimef 20250703-003419
+attr experiment ValidationTest1
+attr inifile omnetpp.ini
+attr iterationvars $arrivalRate=30000
+attr iterationvarsd arrivalRate=30000
+attr iterationvarsf arrivalRate=30000-
+attr measurement $arrivalRate=30000
+attr network cellularroundrobin.CellularNetwork
+attr processid 28848
+attr repetition 5
+attr replication #5
+attr resultdir results
+attr runnumber 25
+attr seedset 5
+itervar arrivalRate 30000
+config description "Single user with fixed packet size and CQI 15"
+config sim-time-limit 20s
+config warmup-period 10s
+config *.numUsers 1
+config *.user[0].arrivalPattern "\"fixed\""
+config *.user[0].packetPattern "\"fixed\""
+config *.user[0].maxPacketSize 75B
+config *.user[0].cqiModel "\"fixed\""
+config *.user[0].cqi 15
+config *.user[0].arrivalRate 30000Hz
+config network cellularroundrobin.CellularNetwork
+config sim-time-limit 100s
+config warmup-period 10s
+config repeat 10
+config seed-set 5
+config num-rngs 40
+config **.statistic-recording true
+config **.scalar-recording true
+config **.vector-recording true
+config output-scalar-file results/ValidationTest1-$arrivalRate=30000-5.sca
+config output-vector-file results/ValidationTest1-$arrivalRate=30000-5.vec
+config *.numUsers 10
+config *.baseStation.numResourceBlocks 25
+config *.baseStation.ttiDuration 1ms
+config *.baseStation.schedulingAlgorithm "\"RoundRobin\""
+config *.user[*].arrivalRngId "3*index + 0"
+config *.user[*].sizeRngId "3*index + 1"
+config *.user[*].cqiRngId "3*index + 2"
+
+vector 0 CellularNetwork.baseStation.queue[0] queueLength:vector ETV
+attr recordingmode vector
+attr source queueLength
+vector 1 CellularNetwork.baseStation.queue[0] responseTime:vector ETV
+attr recordingmode vector
+attr source userResponseTime
+vector 2 CellularNetwork.baseStation.queue[0] bytesTransmitted:vector ETV
+attr recordingmode vector
+attr source userBytesTransmitted
+vector 3 CellularNetwork.baseStation.scheduler systemTransmittedBytes:vector ETV
+attr recordingmode vector
+attr source transmittedBytes
+0	2110 910220 949999 1050414 10 11.057 32768 0 30 491505 9993935
+1	912330 1019913 949999 1053739 10 11.092 32768 1e-07 0.000966777577 15.844255434752 0.010389234547774
+0	1932243 926546 1050418 1150833 11.057033222763 12.114033212193 32768 0 30 491506 9993936
+1	2858789 1035815 1053739 1157479 11.092 12.184 32768 1.1092e-07 0.000966788497 15.84248001536 0.010386522441185
+0	3894604 926547 1150836 1251251 12.114066545526 13.171066534956 32768 0 30 491507 9993939
+1	4821151 1035816 1157479 1261219 12.184 13.276 32768 1.2184e-07 0.000966799417 15.840704595968 0.010384947980394
+0	5856967 926547 1251254 1351669 13.171099868289 14.228099857719 32768 0 30 491508 9993944
+1	6783514 1035808 1261219 1365054 13.276 14.369 32768 1.3276e-07 0.000966810347 15.840929176576 0.010386311740123
+0	7819322 926547 1351672 1452087 14.228133191052 15.285133180482 32768 0 30 491509 9993951
+1	8745869 1035786 1365054 1468794 14.369 15.461 32768 1.4369e-07 0.000966821267 15.845153757184 0.010389747846854
+0	9781655 926545 1452090 1552505 15.285166513815 16.342166503245 32768 0 30 491510 9993960
+1	10708200 1035817 1468794 1572534 15.461 16.553 32768 1.5461e-07 0.000966832187 15.843378337792 0.010387320006272
+0	11744017 926548 1552508 1652923 16.342199836578 17.399199826008 32768 0 30 491511 9993971
+1	12670565 1035814 1572534 1676274 16.553 17.645 32768 1.6553e-07 0.000966843107 15.8416029184 0.010386029811488
+0	13706379 926546 1652926 1753341 17.399233159341 18.456233148771 32768 0 30 491512 9993984
+1	14632925 1035809 1676274 1780109 17.645 18.738 32768 1.7645e-07 0.000966854037 15.843827499008 0.010389212094802
+0	15668734 926546 1753344 1853759 18.456266482104 19.513266471534 32768 0 30 491513 9993999
+1	16595280 1035805 1780109 1883849 18.738 19.83 32768 1.8738e-07 0.000966864957 15.846052079616 0.010390332286025
+0	17631085 426654 1853762 1899999 19.513299804867 20 15089 0 30 226419 4604381
+1	18057739 161700 1883849 1899999 19.83 20 5118 1.983e-07 0.000966866657 2.471119235199 0.0016189118052083
+2	18219439 218371 949999 1899999 10 20 10001 2250 2250 22502250 50630062500
+3	18437810 218371 949999 1899999 10 20 10001 2250 2250 22502250 50630062500
+

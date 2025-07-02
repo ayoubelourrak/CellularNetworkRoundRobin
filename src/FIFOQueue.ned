@@ -28,9 +28,9 @@ simple FIFOQueue
         @signal[userResponseTime](type=simtime_t);
         @signal[userBytesTransmitted](type=int);
         
-        @statistic[queueLength](source=queueLength; record=vector,timeavg,stats);
-        @statistic[responseTime](source=userResponseTime; record=vector,stats,histogram);
-        @statistic[bytesTransmitted](source=userBytesTransmitted; record=vector,timeavg,stats,sum);
+        @statistic[queueLength](source=queueLength; record=timeavg,stats,vector);
+        @statistic[responseTime](source=userResponseTime; record=stats,vector);
+        @statistic[bytesTransmitted](source=userBytesTransmitted; record=stats,sum,vector);
         
         @display("i=block/queue;q=queue");
         
