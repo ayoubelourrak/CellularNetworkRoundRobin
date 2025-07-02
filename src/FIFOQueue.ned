@@ -26,15 +26,14 @@ simple FIFOQueue
         // Statistics
         @signal[queueLength](type=int);
         @signal[userResponseTime](type=simtime_t);
-        @signal[userBytesTransmitted](type=double);
+        @signal[userBytesTransmitted](type=int);
         
         @statistic[queueLength](source=queueLength; record=vector,timeavg,stats);
-        @statistic[responseTime](source="userResponseTime"; record=vector,stats,histogram);
-        @statistic[bytesTransmitted](source="userBytesTransmitted"; record=vector,timeavg,stats);
+        @statistic[responseTime](source=userResponseTime; record=vector,stats,histogram);
+        @statistic[bytesTransmitted](source=userBytesTransmitted; record=vector,timeavg,stats,sum);
         
         @display("i=block/queue;q=queue");
         
     gates:
         input in;
-        output out;
 }

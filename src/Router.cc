@@ -27,11 +27,11 @@ void Router::handleMessage(cMessage *msg)
     // Get the arrival gate index
     int gateIndex = msg->getArrivalGate()->getIndex();
 
-    if (DataPacket *packet = check_and_cast<DataPacket*>(msg)) {
+    if (DataPacket *packet = dynamic_cast<DataPacket*>(msg)) {
         // Route data packets to the corresponding queue
         send(packet, "toQueue", gateIndex);
     }
-    else if (CQIReport *report = check_and_cast<CQIReport*>(msg)) {
+    else if (CQIReport *report = dynamic_cast<CQIReport*>(msg)) {
         // Route CQI reports to the scheduler
         send(report, "toScheduler");
     }

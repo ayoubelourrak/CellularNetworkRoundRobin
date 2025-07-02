@@ -31,6 +31,7 @@ class UserEquipment : public cSimpleModule
         double arrivalRate;
         int maxPacketSize;
         std::string arrivalPattern;
+        std::string packetPattern;
         cMessage *nextArrivalEvent;
         unsigned long sequenceNumber;
 

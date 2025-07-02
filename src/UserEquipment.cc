@@ -22,8 +22,9 @@ void UserEquipment::initialize()
     // Get parameters
         userId = par("userId");
         arrivalRate = par("arrivalRate");
-        maxPacketSize = par("packetSize");
+        maxPacketSize = par("maxPacketSize");
         arrivalPattern = par("arrivalPattern").stringValue();
+        packetPattern = par("packetPattern").stringValue();
         cqiModel = par("cqiModel").stringValue();
         maxCQI = par("maxCQI");
 
@@ -132,7 +133,11 @@ double UserEquipment::getNextArrivalInterval()
 
 int UserEquipment::getPacketSize()
 {
-    return intuniform(1, maxPacketSize, sizeRngId);
+    if (packetPattern == "fixed"){
+        return maxPacketSize;
+    } else {
+        return intuniform(1, maxPacketSize, sizeRngId);
+    }
 }
 
 void UserEquipment::updateCQI()

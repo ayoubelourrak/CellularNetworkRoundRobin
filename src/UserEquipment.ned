@@ -24,6 +24,7 @@ simple UserEquipment
         volatile double arrivalRate @unit(Hz) = default(2000Hz);  // packets/second
         volatile int maxPacketSize @unit(byte) = default(75B);
         string arrivalPattern = default("exponential");
+        string packetPattern = default("uniform");
         
         // Channel quality parameters
         volatile int cqi = default(15);
