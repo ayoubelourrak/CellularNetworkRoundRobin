@@ -34,7 +34,7 @@ class FIFOQueue : public cSimpleModule
         // Statistics
         simsignal_t queueLengthSignal;
         simsignal_t userResponseTimeSignal;
-        simsignal_t userBytesTrasmittedSignal;
+        simsignal_t userBytesTransmittedSignal;
 
 
     protected:

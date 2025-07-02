@@ -30,7 +30,7 @@ simple Scheduler
         @signal[scheduledUsers](type=int);
         @signal[transmittedBytes](type=long);
         
-        @statistic[systemTrasmittedBytes](source=transmittedBytes; record=vector,stats,timeavg,sum);
+        @statistic[systemTransmittedBytes](source=transmittedBytes; record=vector,stats,timeavg,sum);
         @statistic[resourceUtilization](source=rbUtilization; record=vector,stats,timeavg,histogram);
         @statistic[scheduledUsersPerRound](source=scheduledUsers; record=vector,stats,histogram);
         

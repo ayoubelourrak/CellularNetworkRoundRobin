@@ -25,7 +25,7 @@ void FIFOQueue::initialize()
 
     queueLengthSignal = registerSignal("queueLength");
     userResponseTimeSignal = registerSignal("userResponseTime");
-    userBytesTrasmittedSignal = registerSignal("userBytesTrasmitted");
+    userBytesTransmittedSignal = registerSignal("userBytesTransmitted");
 }
 
 void FIFOQueue::handleMessage(cMessage *msg)
@@ -74,7 +74,7 @@ DataPacket* FIFOQueue::peekFront() const
 QueueResult* FIFOQueue::getPacketsToTransmit(int bytesPerRB, int rbsAvailable)
 {
     int totalBytesAvailable = bytesPerRB * rbsAvailable;
-    int totalBytesTrasmitted = 0;
+    int totalBytesTransmitted = 0;
     int rbUsed = 0;
 
     while (totalBytesAvailable > 0 && !isEmpty()){
@@ -83,7 +83,7 @@ QueueResult* FIFOQueue::getPacketsToTransmit(int bytesPerRB, int rbsAvailable)
             DataPacket *packet = check_and_cast<DataPacket*>(dequeue());
 
             totalBytesAvailable -= packet->getByteLength();
-            totalBytesTrasmitted += packet->getByteLength();
+            totalBytesTransmitted += packet->getByteLength();
 
             simtime_t responseTime = simTime() - packet->getCreationTime();
             emit(userResponseTimeSignal, responseTime);
@@ -91,17 +91,18 @@ QueueResult* FIFOQueue::getPacketsToTransmit(int bytesPerRB, int rbsAvailable)
             EV_DEBUG << "Transmitted packet "<< packet->getSequenceNumber() << ": "
                     << packet->getByteLength() << " bytes, "
                     << "response time: " << responseTime << "s\n";
+            delete packet;
         } else {
             break;
         }
     }
 
-    rbUsed = (totalBytesTrasmitted + bytesPerRB - 1) / bytesPerRB;
+    rbUsed = (totalBytesTransmitted + bytesPerRB - 1) / bytesPerRB;
 
     emit(queueLengthSignal, getLength());
-    emit(userBytesTrasmittedSignal, totalBytesTrasmitted);
+    emit(userBytesTransmittedSignal, totalBytesTransmitted);
 
-    QueueResult *packetsToTransmit = new QueueResult(rbUsed, totalBytesTrasmitted);
+    QueueResult *packetsToTransmit = new QueueResult(rbUsed, totalBytesTransmitted);
 
     return packetsToTransmit;
 }

@@ -121,6 +121,9 @@ double UserEquipment::getNextArrivalInterval()
     if (arrivalPattern == "exponential") {
         return exponential(1.0 / arrivalRate, arrivalRngId);
     }
+    else if (arrivalPattern == "fixed"){
+        return 1.0 / arrivalRate;
+    }
     else {
         // Default to exponential
         return exponential(1.0 / arrivalRate, arrivalRngId);
