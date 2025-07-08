@@ -40,7 +40,7 @@ class Scheduler : public cSimpleModule
 
         // User information
         std::vector<int> userCQI;
-        std::vector<FIFOQueue*> userQueues;  // Pointers to queue modules
+        std::vector<FIFOQueue*> userQueues;
 
         // CQI collection state
         std::vector<bool> cqiReceived;

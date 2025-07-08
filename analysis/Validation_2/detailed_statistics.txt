@@ -1,0 +1,175 @@
+
+====================================================================================================
+CELLULARROUNDROBIN VALIDATION TEST - DETAILED ANALYSIS
+====================================================================================================
+
+--- RESPONSE TIME STATISTICS ---
+
+Arrival Rate: (4000.0, 4000.0) Hz
+  User 0:
+    Mean: 0.000375 s
+    99% CI: [0.000375, 0.000375]
+    Samples: 20
+  User 1:
+    Mean: 0.000375 s
+    99% CI: [0.000375, 0.000375]
+    Samples: 20
+
+Arrival Rate: (7000.0, 7000.0) Hz
+  User 0:
+    Mean: 0.000571 s
+    99% CI: [0.000571, 0.000571]
+    Samples: 20
+  User 1:
+    Mean: 0.000571 s
+    99% CI: [0.000571, 0.000571]
+    Samples: 20
+
+Arrival Rate: (10000.0, 10000.0) Hz
+  User 0:
+    Mean: 0.000450 s
+    99% CI: [0.000450, 0.000450]
+    Samples: 20
+  User 1:
+    Mean: 0.000450 s
+    99% CI: [0.000450, 0.000450]
+    Samples: 20
+
+Arrival Rate: (13000.0, 13000.0) Hz
+  User 0:
+    Mean: 8.750231 s
+    99% CI: [8.750231, 8.750231]
+    Samples: 20
+  User 1:
+    Mean: 0.000962 s
+    99% CI: [0.000962, 0.000962]
+    Samples: 20
+
+Arrival Rate: (16000.0, 16000.0) Hz
+  User 0:
+    Mean: 14.218906 s
+    99% CI: [14.218906, 14.218906]
+    Samples: 20
+  User 1:
+    Mean: 0.000906 s
+    99% CI: [0.000906, 0.000906]
+    Samples: 20
+
+Arrival Rate: (19000.0, 19000.0) Hz
+  User 0:
+    Mean: 18.815868 s
+    99% CI: [18.815868, 18.815868]
+    Samples: 20
+  User 1:
+    Mean: 0.000974 s
+    99% CI: [0.000974, 0.000974]
+    Samples: 20
+
+Arrival Rate: (22000.0, 22000.0) Hz
+  User 0:
+    Mean: 21.420500 s
+    99% CI: [21.420500, 21.420500]
+    Samples: 20
+  User 1:
+    Mean: 0.000932 s
+    99% CI: [0.000932, 0.000932]
+    Samples: 20
+
+Arrival Rate: (25000.0, 25000.0) Hz
+  User 0:
+    Mean: 23.400020 s
+    99% CI: [23.400020, 23.400020]
+    Samples: 20
+  User 1:
+    Mean: 0.000940 s
+    99% CI: [0.000940, 0.000940]
+    Samples: 20
+
+Arrival Rate: (28000.0, 28000.0) Hz
+  User 0:
+    Mean: 25.535661 s
+    99% CI: [25.535661, 25.535661]
+    Samples: 20
+  User 1:
+    Mean: 0.000982 s
+    99% CI: [0.000982, 0.000982]
+    Samples: 20
+
+Arrival Rate: (31000.0, 31000.0) Hz
+  User 0:
+    Mean: 26.209661 s
+    99% CI: [26.209661, 26.209661]
+    Samples: 20
+  User 1:
+    Mean: 1.049306 s
+    99% CI: [1.049306, 1.049306]
+    Samples: 20
+
+Arrival Rate: (34000.0, 34000.0) Hz
+  User 0:
+    Mean: 26.764691 s
+    99% CI: [26.764691, 26.764691]
+    Samples: 20
+  User 1:
+    Mean: 3.824367 s
+    99% CI: [3.824367, 3.824367]
+    Samples: 20
+
+--- SYSTEM THROUGHPUT STATISTICS ---
+
+Arrival Rate: (4000.0, 4000.0) Hz
+  Mean Throughput: 2.56 Mbps
+  99% CI: [2.56, 2.56] Mbps
+  Samples: 20
+
+Arrival Rate: (7000.0, 7000.0) Hz
+  Mean Throughput: 4.48 Mbps
+  99% CI: [4.48, 4.48] Mbps
+  Samples: 20
+
+Arrival Rate: (10000.0, 10000.0) Hz
+  Mean Throughput: 6.40 Mbps
+  99% CI: [6.40, 6.40] Mbps
+  Samples: 20
+
+Arrival Rate: (13000.0, 13000.0) Hz
+  Mean Throughput: 7.20 Mbps
+  99% CI: [7.20, 7.20] Mbps
+  Samples: 20
+
+Arrival Rate: (16000.0, 16000.0) Hz
+  Mean Throughput: 8.00 Mbps
+  99% CI: [8.00, 8.00] Mbps
+  Samples: 20
+
+Arrival Rate: (19000.0, 19000.0) Hz
+  Mean Throughput: 8.64 Mbps
+  99% CI: [8.64, 8.64] Mbps
+  Samples: 20
+
+Arrival Rate: (22000.0, 22000.0) Hz
+  Mean Throughput: 9.44 Mbps
+  99% CI: [9.44, 9.44] Mbps
+  Samples: 20
+
+Arrival Rate: (25000.0, 25000.0) Hz
+  Mean Throughput: 10.24 Mbps
+  99% CI: [10.24, 10.24] Mbps
+  Samples: 20
+
+Arrival Rate: (28000.0, 28000.0) Hz
+  Mean Throughput: 10.88 Mbps
+  99% CI: [10.88, 10.88] Mbps
+  Samples: 20
+
+Arrival Rate: (31000.0, 31000.0) Hz
+  Mean Throughput: 11.52 Mbps
+  99% CI: [11.52, 11.52] Mbps
+  Samples: 20
+
+Arrival Rate: (34000.0, 34000.0) Hz
+  Mean Throughput: 11.52 Mbps
+  99% CI: [11.52, 11.52] Mbps
+  Samples: 20
+
+====================================================================================================

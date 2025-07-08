@@ -5,6 +5,9 @@
 /.project
 /.settings
 /out
-/analysis
+/analysis/csv_results
+/analysis/test.ipynb
 src/CellularRoundRobin_dbg
 src/CellularRoundRobin
+/simulations/results
+/simulations/*.anf

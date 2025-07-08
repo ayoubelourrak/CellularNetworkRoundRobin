@@ -1,10 +1,3 @@
-/*
- * QueueResult.h
- *
- *  Created on: 1 Jul 2025
- *      Author: ayoubelourrak
- */
-
 #ifndef QUEUERESULT_H_
 #define QUEUERESULT_H_
 
@@ -24,7 +17,7 @@ class QueueResult : public omnetpp::cObject {
     int getRbUsed() const { return rbUsed; }
     int getBytesToTransmit() const { return bytesToTransmit; }
 
-    // Setters (if needed)
+    // Setters
     void setRbUsed(int rb) { rbUsed = rb; }
     void setBytesToTransmit(int bytes) { bytesToTransmit = bytes; }
 

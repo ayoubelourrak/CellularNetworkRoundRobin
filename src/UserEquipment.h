@@ -54,6 +54,7 @@ class UserEquipment : public cSimpleModule
         simsignal_t packetsGeneratedSignal;
         simsignal_t cqiValueSignal;
         simsignal_t interArrivalTimeSignal;
+        simsignal_t packetDimensionSignal;
 
     protected:
         virtual void initialize() override;

@@ -1,0 +1,131 @@
+
+====================================================================================================
+CELLULARROUNDROBIN VALIDATION TEST - DETAILED ANALYSIS
+====================================================================================================
+
+--- RESPONSE TIME STATISTICS ---
+
+Arrival Rate: 20000.0 Hz
+  User 0:
+    Mean: 0.000605 s
+    99% CI: [0.000604, 0.000606]
+    Samples: 20
+
+Arrival Rate: 21000.0 Hz
+  User 0:
+    Mean: 0.000704 s
+    99% CI: [0.000701, 0.000707]
+    Samples: 20
+
+Arrival Rate: 22000.0 Hz
+  User 0:
+    Mean: 0.001015 s
+    99% CI: [0.001003, 0.001026]
+    Samples: 20
+
+Arrival Rate: 23000.0 Hz
+  User 0:
+    Mean: 0.017271 s
+    99% CI: [0.011005, 0.023537]
+    Samples: 20
+
+Arrival Rate: 24000.0 Hz
+  User 0:
+    Mean: 1.304700 s
+    99% CI: [1.277376, 1.332025]
+    Samples: 20
+
+Arrival Rate: 25000.0 Hz
+  User 0:
+    Mean: 2.552348 s
+    99% CI: [2.526087, 2.578609]
+    Samples: 20
+
+Arrival Rate: 26000.0 Hz
+  User 0:
+    Mean: 3.704199 s
+    99% CI: [3.678883, 3.729516]
+    Samples: 20
+
+Arrival Rate: 27000.0 Hz
+  User 0:
+    Mean: 4.770772 s
+    99% CI: [4.746349, 4.795194]
+    Samples: 20
+
+Arrival Rate: 28000.0 Hz
+  User 0:
+    Mean: 5.761160 s
+    99% CI: [5.737566, 5.784754]
+    Samples: 20
+
+Arrival Rate: 29000.0 Hz
+  User 0:
+    Mean: 6.683164 s
+    99% CI: [6.660355, 6.705974]
+    Samples: 20
+
+Arrival Rate: 30000.0 Hz
+  User 0:
+    Mean: 7.543780 s
+    99% CI: [7.521685, 7.565875]
+    Samples: 20
+
+--- SYSTEM THROUGHPUT STATISTICS ---
+
+Arrival Rate: 20000.0 Hz
+  Mean Throughput: 6.08 Mbps
+  99% CI: [6.07, 6.08] Mbps
+  Samples: 20
+
+Arrival Rate: 21000.0 Hz
+  Mean Throughput: 6.38 Mbps
+  99% CI: [6.38, 6.39] Mbps
+  Samples: 20
+
+Arrival Rate: 22000.0 Hz
+  Mean Throughput: 6.69 Mbps
+  99% CI: [6.68, 6.69] Mbps
+  Samples: 20
+
+Arrival Rate: 23000.0 Hz
+  Mean Throughput: 6.99 Mbps
+  99% CI: [6.99, 7.00] Mbps
+  Samples: 20
+
+Arrival Rate: 24000.0 Hz
+  Mean Throughput: 7.00 Mbps
+  99% CI: [7.00, 7.00] Mbps
+  Samples: 20
+
+Arrival Rate: 25000.0 Hz
+  Mean Throughput: 7.00 Mbps
+  99% CI: [7.00, 7.00] Mbps
+  Samples: 20
+
+Arrival Rate: 26000.0 Hz
+  Mean Throughput: 7.00 Mbps
+  99% CI: [7.00, 7.00] Mbps
+  Samples: 20
+
+Arrival Rate: 27000.0 Hz
+  Mean Throughput: 7.00 Mbps
+  99% CI: [7.00, 7.00] Mbps
+  Samples: 20
+
+Arrival Rate: 28000.0 Hz
+  Mean Throughput: 7.00 Mbps
+  99% CI: [7.00, 7.00] Mbps
+  Samples: 20
+
+Arrival Rate: 29000.0 Hz
+  Mean Throughput: 7.00 Mbps
+  99% CI: [7.00, 7.00] Mbps
+  Samples: 20
+
+Arrival Rate: 30000.0 Hz
+  Mean Throughput: 7.00 Mbps
+  99% CI: [7.00, 7.00] Mbps
+  Samples: 20
+
+====================================================================================================

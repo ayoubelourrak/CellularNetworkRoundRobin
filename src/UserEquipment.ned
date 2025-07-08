@@ -44,10 +44,12 @@ simple UserEquipment
         @signal[packetGenerated](type=long);
         @signal[cqiValue](type=long);
         @signal[interArrivalTime](type=simtime_t);
+        @signal[packetDimension](type=int);
         
         @statistic[generatedPackets](source=packetGenerated; record=count);
         @statistic[channelQuality](source=cqiValue; record=histogram,stats);
-        @statistic[interArrivalTime](source=interArrivalTime; record=stats,histogram);
+        @statistic[interArrivalTime](source=interArrivalTime; record=stats,histogram,vector);
+        @statistic[packetDimension](source=packetDimension; record=stats,histogram,sum);
         
         @display("i=device/cellphone");
         

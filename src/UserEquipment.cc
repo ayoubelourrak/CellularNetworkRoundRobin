@@ -45,6 +45,7 @@ void UserEquipment::initialize()
         packetsGeneratedSignal = registerSignal("packetGenerated");
         cqiValueSignal = registerSignal("cqiValue");
         interArrivalTimeSignal = registerSignal("interArrivalTime");
+        packetDimensionSignal = registerSignal("packetDimension");
 
         // Generate initial CQI
         currentCQI = 0;
@@ -94,6 +95,8 @@ void UserEquipment::generatePacket()
     packet->setSequenceNumber(sequenceNumber++);
     packet->setByteLength(getPacketSize());
     packet->setCreationTime(simTime());
+
+    emit(packetDimensionSignal, packet->getByteLength());
 
     // Record inter-arrival time
     if (lastArrivalTime > 0) {
