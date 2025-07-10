@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 Warmup and Simulation Time Analysis for CellularRoundRobin
-Individual replica plots with convergence analysis
 """
 
 import pandas as pd
@@ -88,12 +87,12 @@ def load_vector_data(filename):
     
     return dict(vector_data), run_metadata
 
-def detect_warmup_stability(times, values, cv_threshold=0.02, min_samples=100, window_fraction=0.5):
+def detect_warmup_stability(times, values, cv_threshold=0.05, min_samples=100, window_fraction=0.5):
     """
     Detect when the cumulative average stabilizes for warmup analysis using coefficient of variation
     
     Parameters:
-    - cv_threshold: Maximum coefficient of variation to consider stable (default 0.02 = 2%)
+    - cv_threshold: Maximum coefficient of variation to consider stable (default 0.05 = 5%)
     - min_samples: Minimum number of samples before checking stability
     - window_fraction: Fraction of data to use for stability window (default 0.5 = 50%)
     
@@ -136,14 +135,12 @@ def calculate_windowed_average(times, values, window_size=1.0, step_size=0.1):
         return np.array([]), np.array([])
     
     # Create time grid
-    start_time = 0 # Normally it should be window_size
+    start_time = 0
     end_time = times[-1]
     time_grid = np.arange(start_time, end_time + step_size, step_size)
     
-    # Pre-allocate result array
     avg_values = np.zeros(len(time_grid))
     
-    # Use searchsorted for efficient window boundary finding
     for i, t in enumerate(time_grid):
         window_start = max(t - window_size, 0)
         
@@ -166,9 +163,9 @@ def calculate_cumulative_average(times, values):
     return times, cumavg
 
 def detect_simtime_convergence(times, values, convergence_window=10.0, 
-                                        threshold=0.02, min_time=1.0):
+                                        threshold=0.05, min_time=1.0):
     """
-    Convergence detection using vectorized operations
+    Convergence detection
     
     Returns:
     - convergence_time: Time when convergence is achieved
@@ -286,7 +283,7 @@ def create_replica_plots(run_name, run_data, run_metadata, output_dir='plots'):
                     ax.plot(win_times, win_values, label=f'User {user_id}', linewidth=2)
                     
                     # Detect convergence
-                    conv_time, conv_value = detect_simtime_convergence(data['times'], throughput_kbps, threshold=0.05)
+                    conv_time, conv_value = detect_simtime_convergence(data['times'], throughput_kbps, threshold=0.1)
                     if conv_time and conv_value:
                         ax.axvline(x=conv_time, color='red', linestyle='--', alpha=0.7)
                         ax.axhline(y=conv_value, color='red', linestyle='--', alpha=0.7)
@@ -452,7 +449,7 @@ def analyze_simtime_batch(runs_data):
                 # Convert to kbps
                 throughput_kbps = data['values'] * 8 / 1e3
                 conv_time, conv_value = detect_simtime_convergence(
-                    data['times'], throughput_kbps, threshold=0.05)
+                    data['times'], throughput_kbps, threshold=0.1)
                 if conv_time:
                     user_throughput_data[user_id] = {
                         'time': conv_time,
@@ -537,11 +534,11 @@ def main():
     print("Loading vector data...")
     
     # Configuration parameters
-    WARMUP_CV_THRESHOLD = 0.02  # 5% coefficient of variation for warmup stability
+    WARMUP_CV_THRESHOLD = 0.02  # 2% coefficient of variation for warmup stability
     
     try:
         # Load data
-        vector_data, run_metadata = load_vector_data('../csv_results/warmup_vector_2000_version2.csv')
+        vector_data, run_metadata = load_vector_data('../csv_results/warmup_vector_9000_binomial.csv')
         
         if not vector_data:
             print("Error: No vector data found in the CSV file.")
@@ -569,7 +566,7 @@ def main():
         print("Analyzing simulation times...")
         simtime_results = analyze_simtime_batch(vector_data)
         
-        # Create enhanced summary DataFrame
+        # Create summary DataFrame
         summary_data = []
         for run in sorted(set(warmup_results.keys()) | set(simtime_results.keys())):
             warmup = warmup_results.get(run, {})
@@ -618,7 +615,7 @@ def main():
         
         # Print results
         print("\n" + "="*160)
-        print(f"ENHANCED ANALYSIS RESULTS WITH CONVERGENCE VALUES (CV Threshold: {WARMUP_CV_THRESHOLD})")
+        print(f"ANALYSIS RESULTS WITH CONVERGENCE VALUES")
         print("="*160)
         print(summary_df.to_string(index=False))
         

@@ -27,10 +27,12 @@ simple FIFOQueue
         @signal[queueLength](type=int);
         @signal[userResponseTime](type=simtime_t);
         @signal[userBytesTransmitted](type=int);
+        @signal[rbUsed](type=int);
         
         @statistic[queueLength](source=queueLength; record=timeavg,stats,vector);
         @statistic[responseTime](source=userResponseTime; record=stats);
         @statistic[bytesTransmitted](source=userBytesTransmitted; record=stats,sum,vector);
+        @statistic[resourceBlocksUsed](source=rbUsed; record=stats,histogram);
         
         @display("i=block/queue;q=queue");
         

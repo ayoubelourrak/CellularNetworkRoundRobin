@@ -17,7 +17,6 @@
 
 Define_Module(Scheduler);
 
-// CQI to bytes per RB mapping based on project specification
 const int Scheduler::cqiToBytesPerRB[16] = {
     0,   // CQI 0 (not used)
     3,   // CQI 1

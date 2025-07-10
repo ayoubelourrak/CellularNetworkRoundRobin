@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 Analysis script for CellularRoundRobin
-Analyzes multiple metrics across different users and arrival rates
 """
 
 import pandas as pd
@@ -200,8 +199,6 @@ def process_resource_utilization(df):
 
 def group_by_arrival_rate(metric_df, arrival_rates):
     """Group results by arrival rate configuration"""
-    # For single user scenarios, use the user[0] arrival rate
-    # For multi-user scenarios, create a combined key
     
     grouped = {}
     for _, row in metric_df.iterrows():
@@ -214,7 +211,7 @@ def group_by_arrival_rate(metric_df, arrival_rates):
                 # Single user case
                 rate_key = arrival_rates[run][0]
             else:
-                # Multi-user case - create a tuple of rates
+                # Multi-user case
                 rates = [arrival_rates[run].get(i, 0) for i in range(num_users)]
                 rate_key = tuple(rates)
             
@@ -423,7 +420,7 @@ def plot_user_throughput(results, ax):
     
     # Prepare data - aggregate across repetitions
     plot_data = {}
-    rate_keys_sorted = sorted(grouped.keys()) # Get sorted numeric rate keys
+    rate_keys_sorted = sorted(grouped.keys())
     rate_labels = [f"{rate_key/1000}" if not isinstance(rate_key, tuple) else f"{rate_key[0]/1000}"
                    for rate_key in rate_keys_sorted]
     

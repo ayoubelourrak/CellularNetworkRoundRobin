@@ -26,6 +26,7 @@ void FIFOQueue::initialize()
     queueLengthSignal = registerSignal("queueLength");
     userResponseTimeSignal = registerSignal("userResponseTime");
     userBytesTransmittedSignal = registerSignal("userBytesTransmitted");
+    rbUsedSignal = registerSignal("rbUsed");
 }
 
 void FIFOQueue::handleMessage(cMessage *msg)
@@ -101,6 +102,7 @@ QueueResult* FIFOQueue::getPacketsToTransmit(int bytesPerRB, int rbsAvailable)
 
     emit(queueLengthSignal, getLength());
     emit(userBytesTransmittedSignal, totalBytesTransmitted);
+    emit(rbUsedSignal, rbUsed);
 
     QueueResult *packetsToTransmit = new QueueResult(rbUsed, totalBytesTransmitted);
 

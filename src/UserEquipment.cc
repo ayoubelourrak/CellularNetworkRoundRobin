@@ -107,7 +107,6 @@ void UserEquipment::generatePacket()
 
     emit(packetsGeneratedSignal, 1L);
 
-    // Send directly to base station (no local queue)
     send(packet, "out");
 
     EV_DEBUG << "User " << userId << " generated packet " << packet->getSequenceNumber()

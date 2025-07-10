@@ -47,9 +47,9 @@ simple UserEquipment
         @signal[packetDimension](type=int);
         
         @statistic[generatedPackets](source=packetGenerated; record=count);
-        @statistic[channelQuality](source=cqiValue; record=histogram,stats);
+        @statistic[channelQuality](source=cqiValue; record=histogram,stats,vector);
         @statistic[interArrivalTime](source=interArrivalTime; record=stats,histogram,vector);
-        @statistic[packetDimension](source=packetDimension; record=stats,histogram,sum);
+        @statistic[packetDimension](source=packetDimension; record=stats,histogram,sum,vector);
         
         @display("i=device/cellphone");
         
